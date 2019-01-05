@@ -1,7 +1,5 @@
 package com.example;
 
-import com.clases.Venues;
-import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -54,11 +52,6 @@ public class MyResourceTest {
      */
     /*@Test
     public void testGetIt() {
-        String responseMsg = target.path("venues").request().get(String.class);
-        assertEquals("Listo!", responseMsg);
-    }*/
-    
-    /*public void testGetIt() {
         String responseMsg = target.path("venues").request().get(String.class);
         assertEquals("Listo!", responseMsg);
     }*/

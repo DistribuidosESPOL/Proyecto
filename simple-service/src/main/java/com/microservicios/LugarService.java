@@ -1,7 +1,7 @@
-package com.example;
+package com.microservicios;
 
-import com.clases.Venues;
-import com.microservicios.VenuesList;
+import com.clases.Lugar;
+import com.utils.LugarList;
 import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
  * Root resource (exposed at "myresource" path)
  */
 @Path("venues")
-public class JSONService {
+public class LugarService {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
@@ -33,34 +33,34 @@ public class JSONService {
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Venues> getVenues_JSON() {
-        List<Venues> listaVenues = VenuesList.getAllVenues();
+    public List<Lugar> getVenues_JSON() {
+        List<Lugar> listaVenues = LugarList.getAllVenues();
         return listaVenues;
     }
     
     @GET
     @Path("/{idVenue}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Venues getVenues(@PathParam("idVenue") int idVenue) {
-        return VenuesList.getVenues(idVenue);
+    public Lugar getVenues(@PathParam("idVenue") int idVenue) {
+        return LugarList.getVenues(idVenue);
     }
     
     @POST
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Venues addVenues(Venues emp) {
-        return VenuesList.addVenues(emp);
+    public Lugar addVenues(Lugar emp) {
+        return LugarList.addVenues(emp);
     }
     
     @PUT
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Venues updateVenues(Venues emp) {
-        return VenuesList.updateVenues(emp);
+    public Lugar updateVenues(Lugar emp) {
+        return LugarList.updateVenues(emp);
     }
  
     @DELETE
     @Path("/{idVenue}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public void deleteVenues(@PathParam("idVenue") int idVenue) {
-        VenuesList.deleteVenues(idVenue);
+        LugarList.deleteVenues(idVenue);
     }
 }
