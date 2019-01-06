@@ -5,15 +5,35 @@
  */
 package com.clases;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author anni
  */
+@Entity
+@Table(name="lugar")
 public class Lugar {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+    
+    @Column(name="nombre")
     private String nombre;
+    
+    @Column(name="tipo")
     private String tipo;
+    
+    @Column(name="capacidad")
     private int capacidad;
+    
+    @Column(name="direccion")
     private String direccion;
     
     public Lugar(){}

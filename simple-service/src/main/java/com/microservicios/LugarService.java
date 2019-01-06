@@ -1,7 +1,7 @@
 package com.microservicios;
 
 import com.clases.Lugar;
-import com.utils.LugarList;
+import com.utils.LugarDAO;
 import java.util.List;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -33,34 +34,54 @@ public class LugarService {
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Lugar> getVenues_JSON() {
-        List<Lugar> listaVenues = LugarList.getAllVenues();
-        return listaVenues;
+    public List<Lugar> getLugares() {
+        LugarDAO dao = new LugarDAO();
+        List<Lugar> listaLugares = dao.getLugares();
+        return listaLugares;
     }
     
     @GET
-    @Path("/{idVenue}")
+    @Path("/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Lugar getVenues(@PathParam("idVenue") int idVenue) {
-        return LugarList.getVenues(idVenue);
+    public Lugar getLugar(@PathParam("idLugar") int idLugar) {
+        LugarDAO dao = new LugarDAO();
+        Lugar lugar = dao.getLugar(idLugar);
+        return lugar;
     }
     
     @POST
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Lugar addVenues(Lugar emp) {
-        return LugarList.addVenues(emp);
+    public Lugar addLugar(Lugar lugar) {
+        lugar.setNombre(lugar.getNombre());
+        lugar.setTipo(lugar.getTipo());
+        lugar.setCapacidad(lugar.getCapacidad());
+        lugar.setDireccion(lugar.getDireccion());
+        LugarDAO dao = new LugarDAO();
+        Lugar lugarNuevo = dao.addLugar(lugar);
+        return lugarNuevo;
     }
     
     @PUT
+    @Path("/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Lugar updateVenues(Lugar emp) {
-        return LugarList.updateVenues(emp);
+    public Response updateLugar(@PathParam("idLugar") int idLugar, Lugar emp) {
+        LugarDAO dao = new LugarDAO();
+        int count = dao.updateLugar(idLugar, emp);
+        if(count==0){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.ok().build();
     }
  
     @DELETE
-    @Path("/{idVenue}")
+    @Path("/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public void deleteVenues(@PathParam("idVenue") int idVenue) {
-        LugarList.deleteVenues(idVenue);
+    public Response deleteLugar(@PathParam("idLugar") int idLugar) {
+        LugarDAO dao = new LugarDAO();
+        int count = dao.deleteLugar(idLugar);
+        if(count==0){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.ok().build();
     }
 }
