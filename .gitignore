@@ -1,1 +1,2 @@
 .netbeans_automatic_build
+./simple-service/target/classes/hibernate.cfg.xml
