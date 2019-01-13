@@ -43,7 +43,6 @@ public class LugarDAO {
             Root<Lugar> root = query.from(Lugar.class);
             query.select(root);
             Query<Lugar> q=session.createQuery(query);
-            q.setCacheable(true);
             lugares =q.getResultList();
         }
         
@@ -67,7 +66,6 @@ public class LugarDAO {
             Root<Lugar> root = query.from(Lugar.class);
             query.where(builder.equal(root.get("id"), id));
             Query q = session.createQuery(query);
-            q.setCacheable(true);
             rowCount = q.executeUpdate();
             tx.commit();
         }
@@ -91,7 +89,6 @@ public class LugarDAO {
             
             query.where(builder.equal(root.get("id"), id));
             Query q = session.createQuery(query);
-            q.setCacheable(true);
             rowCount = q.executeUpdate();
             tx.commit();
         }
