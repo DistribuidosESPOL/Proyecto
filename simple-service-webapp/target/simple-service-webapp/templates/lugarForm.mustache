@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Form</title>
+    <style>
+    .row {
+      line-height: 2;
+    }
+    .row .label {
+      float: left;
+      width: 40%;
+      text-align: right;
+      margin-right: 20px;
+    }
+    .toolbar {
+      text-align: center;
+      margin-top: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>User Form</h2>
+    <form action="{{^id}}/simple-service-webapp/api/lugar/add{{/id}}{{#id}}/simple-service-webapp/api/lugar/update{{/id}}" method="POST">
+      <input type="hidden" name="id" value="{{id}}" />
+      <div class="row">
+        <div class="label">Nombre</div>
+        <div class="control">
+          <input type="text" name="nombre" value="{{nombre}}" {{#nombre}}readonly{{/nombre}} />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Tipo</div>
+        <div class="control">
+          <input type="text" name="tipo" value="{{tipo}}" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Capacidad</div>
+        <div class="control">
+          <input type="number" name="capacidad" value="{{capacidad}}" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Dirección</div>
+        <div class="control">
+          <input type="text" name="direccion" value="{{direccion}}" />
+        </div>
+      </div>
+      <div class="toolbar">
+        <input type="submit" value="Save" />
+        <a href="/simple-service-webapp/api/lugar">Cancel</a>
+      </div>
+    </form>
+  </body>
+</html>

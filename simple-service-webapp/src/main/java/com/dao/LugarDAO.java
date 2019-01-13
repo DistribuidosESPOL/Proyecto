@@ -33,7 +33,6 @@ public class LugarDAO {
         int lugarId = (Integer)session.save(lugar);
         tx.commit();
         return lugar;
-        //return "Lugar information saved successfully with id " + lugarId;
     }
     
     public List<Lugar> getLugares(){ 
@@ -44,8 +43,8 @@ public class LugarDAO {
             Root<Lugar> root = query.from(Lugar.class);
             query.select(root);
             Query<Lugar> q=session.createQuery(query);
+            q.setCacheable(true);
             lugares =q.getResultList();
-            //SessionUtil.close();
         }
         
         return lugares;
@@ -59,14 +58,6 @@ public class LugarDAO {
     }
  
     public int deleteLugar(int id) {
-        /*Transaction tx = null;
-        //int rowCount;
-        Session session = SessionUtil.getSession();
-        tx = session.beginTransaction();
-        session.delete(lugar);
-        session.flush();
-        
-        tx.commit();*/
         Transaction tx = null;
         int rowCount;
         try (Session session = SessionUtil.getSession()) {
@@ -76,9 +67,9 @@ public class LugarDAO {
             Root<Lugar> root = query.from(Lugar.class);
             query.where(builder.equal(root.get("id"), id));
             Query q = session.createQuery(query);
+            q.setCacheable(true);
             rowCount = q.executeUpdate();
             tx.commit();
-            //SessionUtil.close();
         }
         return rowCount;
     }
@@ -88,13 +79,6 @@ public class LugarDAO {
         int rowCount=0;
         if(id<=0)
             return rowCount;
-        
-        /*Session session = SessionUtil.getSession();
-        tx = session.beginTransaction();
-        session.update(lugar);
-        session.flush();
-        
-        tx.commit();*/
         try (Session session = SessionUtil.getSession()) {
             tx = session.beginTransaction();
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -107,6 +91,7 @@ public class LugarDAO {
             
             query.where(builder.equal(root.get("id"), id));
             Query q = session.createQuery(query);
+            q.setCacheable(true);
             rowCount = q.executeUpdate();
             tx.commit();
         }

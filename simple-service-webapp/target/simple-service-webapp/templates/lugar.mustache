@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lugares</title>
+    <style>
+      .row {
+        line-height: 2;
+      }
+      .header {
+        font-weight: bold;
+      }
+      .col {
+        float: left;
+        width: 25%;
+      }
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .info {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Users</h2>
+    <div class="toolbar">
+      <a href="/simple-service-webapp/api/lugar/lugarForm">Crear un lugar</a>
+    </div>
+    <div>
+      <div class="row header">
+        <div class="col">Nombre</div>
+        <div class="col">Tipo</div>
+        <div class="col">Capacidad</div>
+        <div class="col">Dirección</div>
+      </div>
+      {{#.}}
+      <div class="row">
+        <div class="col">{{nombre}}</div>
+        <div class="col">{{tipo}}</div>
+        <div class="col">{{capacidad}}</div>
+        <div class="col">{{direccion}}</div>
+        <div class="col">
+          <a href="/simple-service-webapp/api/lugar/update/{{id}}">Editar</a>
+          <a href="/simple-service-webapp/api/lugar/delete/{{id}}">Eliminar</a>
+        </div>
+      </div>
+      {{/.}}
+      {{^.}}
+      <div class="info">Lista vacía</div>
+      {{/.}}
+    </div>
+  </body>
+</html>

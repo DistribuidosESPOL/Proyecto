@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.mvc.Viewable;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -50,6 +51,7 @@ public class LugarResource {
     }
     
     @POST
+    @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Lugar addLugar(Lugar lugar) {
         lugar.setNombre(lugar.getNombre());
@@ -62,7 +64,7 @@ public class LugarResource {
     }
     
     @PUT
-    @Path("/{idLugar}")
+    @Path("/update/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response updateLugar(@PathParam("idLugar") int idLugar, Lugar emp) {
         LugarDAO dao = new LugarDAO();
@@ -74,7 +76,7 @@ public class LugarResource {
     }
  
     @DELETE
-    @Path("/{idLugar}")
+    @Path("/delete/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Response deleteLugar(@PathParam("idLugar") int idLugar) {
         LugarDAO dao = new LugarDAO();
@@ -83,5 +85,11 @@ public class LugarResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok().build();
+    }
+    @GET
+    @Path("showForm")
+    @Produces(MediaType.TEXT_HTML)
+    public Viewable showForm() {
+        return new Viewable("/lugarForm");
     }
 }
