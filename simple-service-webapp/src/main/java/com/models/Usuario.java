@@ -28,32 +28,29 @@ public class Usuario {
     @Column(name="nombre")
     private String nombre;
     
-    @Column(name="apellido")
-    private String apellido;
     
     @Column(name="tipo")
     private String tipo;
     
-    @Column(name="nombre_usuario")
-    private String nombre_usuario;
+    @Column(name="alias")
+    private String alias;
     
     @Column(name="contrasena")
     private String contrasena;
     
-    @Column(name="fecha_registro")
-    private Date fecha_registro;
+    @Column(name="fechaRegistro")
+    private Date fechaRegistro;
     
     public Usuario(){}
     
-    public Usuario(int id, String nombre, String apellido, String tipo, 
-            String nombre_usuario, String contrasena, Date fecha_registro){
+    public Usuario(int id, String nombre, String tipo, 
+            String alias, String contrasena, Date fechaRegistro){
         this.id = id;
         this.nombre = nombre;
-        this.apellido = apellido;
         this.tipo = tipo;
-        this.nombre_usuario = nombre_usuario;
+        this.alias = alias;
         this.contrasena = contrasena;
-        this.fecha_registro = fecha_registro;
+        this.fechaRegistro = fechaRegistro;
     }
 
     public int getId() {
@@ -72,14 +69,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
     public String getTipo() {
         return tipo;
     }
@@ -88,12 +77,12 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    public String getNombre_usuario() {
-        return nombre_usuario;
+    public String getAlias() {
+        return alias;
     }
 
-    public void setNombre_usuario(String nombre_usuario) {
-        this.nombre_usuario = nombre_usuario;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getContrasena() {
@@ -104,12 +93,13 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public Date getFecha_registro() {
-        return fecha_registro;
+    public Date getFechaRegistro() {
+        return fechaRegistro;
     }
 
-    public void setFecha_registro(Date fecha_registro) {
-        this.fecha_registro = fecha_registro;
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
-       
+
+    
 }
