@@ -13,6 +13,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.redisson.Redisson;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
+import org.redisson.config.Config;
+import org.redisson.config.TransportMode;
+import redis.clients.jedis.Jedis;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -26,12 +33,6 @@ public class LugarResource {
      *
      * @return String that will be returned as a text/plain response.
      */
-    /*
-    @GET
-    @Produces("text/plain")
-    public String getIt() {
-        return "Listo!";
-    }*/
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -45,8 +46,21 @@ public class LugarResource {
     @Path("/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Lugar getLugar(@PathParam("idLugar") int idLugar) {
-        LugarDAO dao = new LugarDAO();
-        Lugar lugar = dao.getLugar(idLugar);
+        Lugar lugar;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        lugar = bucket.get();
+        if(lugar==null){
+            LugarDAO dao = new LugarDAO();
+            lugar = dao.getLugar(idLugar);
+            bucket.set(lugar);
+        }
+        
+        redisson.shutdown();
         return lugar;
     }
     
@@ -63,12 +77,30 @@ public class LugarResource {
         return lugarNuevo;
     }
     
+    /**
+     *
+     * @param idLugar
+     * @param nuevoLugar
+     * @return
+     */
     @PUT
     @Path("/update/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateLugar(@PathParam("idLugar") int idLugar, Lugar emp) {
+    public Response updateLugar(@PathParam("idLugar") int idLugar, Lugar nuevoLugar) {
         LugarDAO dao = new LugarDAO();
-        int count = dao.updateLugar(idLugar, emp);
+        int count = dao.updateLugar(idLugar, nuevoLugar);
+        
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        Lugar lugar = bucket.get();
+        if(lugar!=null){
+            bucket.set(nuevoLugar);
+        }
+        
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -81,6 +113,18 @@ public class LugarResource {
     public Response deleteLugar(@PathParam("idLugar") int idLugar) {
         LugarDAO dao = new LugarDAO();
         int count = dao.deleteLugar(idLugar);
+        
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        Lugar lugar = bucket.get();
+        if(lugar!=null){
+            bucket.delete();
+        }
+        
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
