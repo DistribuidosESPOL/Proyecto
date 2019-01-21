@@ -1,2 +1,4 @@
 .netbeans_automatic_build
-./simple-service/target/classes/hibernate.cfg.xml
+./simple-service-webapp/target/classes/hibernate.cfg.xml
+./simple-service-webapp/target/simple-service-webapp.war
+./simple-service-webapp/target/maven-archiver/pom.properties

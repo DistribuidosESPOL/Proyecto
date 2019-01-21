@@ -57,7 +57,6 @@ public class AsientoResource {
         asiento.setCategoria(asiento.getCategoria());
         asiento.setNumero(asiento.getNumero());
         asiento.setLugar(asiento.getLugar());
-       
         AsientoDAO dao = new AsientoDAO();
         Asiento asientoNuevo = dao.addAsiento(asiento);
         return asientoNuevo;
@@ -86,6 +85,7 @@ public class AsientoResource {
         }
         return Response.ok().build();
     }
+    
     /*@GET
     @Path("showForm")
     @Produces(MediaType.TEXT_HTML)

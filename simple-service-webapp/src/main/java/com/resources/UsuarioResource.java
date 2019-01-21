@@ -14,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
 
-
 @Path("usuario")
 public class UsuarioResource {
 
@@ -57,9 +56,6 @@ public class UsuarioResource {
         usuario.setAlias(usuario.getAlias());
         usuario.setContrasena(usuario.getContrasena());
         usuario.setFechaRegistro(usuario.getFechaRegistro());
-        
-        
-        
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuarioNuevo = dao.addUsuario(usuario);
         return usuarioNuevo;
@@ -88,6 +84,7 @@ public class UsuarioResource {
         }
         return Response.ok().build();
     }
+    
     /*@GET
     @Path("showForm")
     @Produces(MediaType.TEXT_HTML)

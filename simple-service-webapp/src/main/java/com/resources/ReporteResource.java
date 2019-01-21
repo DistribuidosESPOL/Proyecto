@@ -57,9 +57,6 @@ public class ReporteResource {
         reporte.setUsuario(reporte.getUsuario());
         reporte.setTipo(reporte.getTipo());
         reporte.setFechaCreacion(reporte.getFechaCreacion());
-        
-        
-        
         ReporteDAO dao = new ReporteDAO();
         Reporte reporteNuevo = dao.addReporte(reporte);
         return reporteNuevo;
@@ -88,6 +85,7 @@ public class ReporteResource {
         }
         return Response.ok().build();
     }
+    
     /*@GET
     @Path("showForm")
     @Produces(MediaType.TEXT_HTML)
