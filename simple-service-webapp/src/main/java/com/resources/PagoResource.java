@@ -57,10 +57,7 @@ public class PagoResource {
         pago.setTipo(pago.getTipo());
         pago.setMonto(pago.getMonto());
         pago.setBanco(pago.getBanco());
-        pago.setFechaPago(pago.getFechaPago());
-        
-        
-        
+        pago.setFechaPago(pago.getFechaPago());        
         PagoDAO dao = new PagoDAO();
         Pago pagoNuevo = dao.addPago(pago);
         return pagoNuevo;
@@ -89,6 +86,7 @@ public class PagoResource {
         }
         return Response.ok().build();
     }
+    
     /*@GET
     @Path("showForm")
     @Produces(MediaType.TEXT_HTML)
