@@ -58,9 +58,7 @@ public class BoletoResource {
         boleto.setEvento(boleto.getEvento());
         boleto.setFechaCompra(boleto.getFechaCompra());
         boleto.setPago(boleto.getPago());
-        boleto.setAsiento(boleto.getAsiento());
-        
-        
+        boleto.setAsiento(boleto.getAsiento());       
         BoletoDAO dao = new BoletoDAO();
         Boleto boletoNuevo = dao.addBoleto(boleto);
         return boletoNuevo;
@@ -89,6 +87,7 @@ public class BoletoResource {
         }
         return Response.ok().build();
     }
+    
     /*@GET
     @Path("showForm")
     @Produces(MediaType.TEXT_HTML)
