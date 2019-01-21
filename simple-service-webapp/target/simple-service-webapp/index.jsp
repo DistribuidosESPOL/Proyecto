@@ -7,9 +7,6 @@
     <p><a href="api/evento">Evento resource</a>  
     <p><a href="api/pago">Pago resource</a>
     <p><a href="api/reporte">Reporte resource</a>  
-    <p><a href="api/usuario">Usuario resource</a>    
-        
-    <p>Visit <a href="http://jersey.java.net">Project Jersey website</a>
-    for more information on Jersey!
+    <p><a href="api/usuario">Usuario resource</a>       
 </body>
 </html>
