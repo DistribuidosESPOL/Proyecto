@@ -13,5 +13,11 @@
     <!--   <property name="hibernate.hbm2ddl.auto">create</property> -->
     <mapping class="com.models.Lugar"/>
     <mapping class="com.models.Asiento"/>
+    <mapping class="com.models.Boleto"/>
+    <mapping class="com.models.Evento"/>
+    <mapping class="com.models.Usuario"/>
+    <mapping class="com.models.Pago"/>
+    <mapping class="com.models.Reporte"/>
+
   </session-factory>
 </hibernate-configuration>
