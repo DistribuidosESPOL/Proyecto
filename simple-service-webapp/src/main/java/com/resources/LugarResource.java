@@ -2,7 +2,10 @@ package com.resources;
 
 import com.dao.LugarDAO;
 import com.models.Lugar;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -15,6 +18,7 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
+import org.redisson.api.RSetCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
@@ -37,8 +41,31 @@ public class LugarResource {
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public List<Lugar> getLugares() {
-        LugarDAO dao = new LugarDAO();
+        //Set<Lugar> lugaresSet;
+        
+        /*Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");*/
+        
+        LugarDAO dao;
+        dao = new LugarDAO();
         List<Lugar> listaLugares = dao.getLugares();
+        
+        /*RedissonClient redisson = Redisson.create(config);
+        RSetCache<Lugar> setCache = redisson.getSetCache("lugares");
+        lugaresSet = setCache.readAll();
+        if(!lugaresSet.iterator().hasNext()){
+            dao = new LugarDAO();
+            listaLugares = dao.getLugares();
+            for (Lugar l : listaLugares) {
+                setCache.add(l);
+            }   
+        }else{
+            for (Lugar lu : lugaresSet) {
+                listaLugares.add(lu);
+            }
+        }
+        redisson.shutdown();*/
         return listaLugares;
     }
     
@@ -68,10 +95,6 @@ public class LugarResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Lugar addLugar(Lugar lugar) {
-        lugar.setNombre(lugar.getNombre());
-        lugar.setTipo(lugar.getTipo());
-        lugar.setCapacidad(lugar.getCapacidad());
-        lugar.setDireccion(lugar.getDireccion());
         LugarDAO dao = new LugarDAO();
         Lugar lugarNuevo = dao.addLugar(lugar);
         return lugarNuevo;
