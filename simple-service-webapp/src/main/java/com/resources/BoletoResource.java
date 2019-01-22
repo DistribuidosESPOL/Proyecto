@@ -45,8 +45,21 @@ public class BoletoResource {
     @Path("/{idBoleto}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Boleto getBoleto(@PathParam("idBoleto") int idBoleto) {
-        BoletoDAO dao = new BoletoDAO();
-        Boleto boleto = dao.getBoleto(idBoleto);
+        Boleto boleto;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Boleto> bucket = redisson.getBucket(Integer.toString(idBoleto));
+        boleto = bucket.get();
+        if(boleto == null){
+            BoletoDAO dao = new BoletoDAO();
+            boleto = dao.getBoleto(idBoleto);
+            bucket.set(boleto);
+        }
+        
+        redisson.shutdown();
         return boleto;
     }
     
@@ -67,9 +80,19 @@ public class BoletoResource {
     @PUT
     @Path("/update/{idBoleto}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateBoleto(@PathParam("idBoleto") int idBoleto, Boleto emp) {
+    public Response updateBoleto(@PathParam("idBoleto") int idBoleto, Boleto nuevoBoleto) {
         BoletoDAO dao = new BoletoDAO();
-        int count = dao.updateBoleto(idBoleto, emp);
+        int count = dao.updateBoleto(idBoleto, nuevoBoleto);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Boleto> bucket = redisson.getBucket(Integer.toString(idBoleto));
+        Boleto boleto = bucket.get();
+        if(boleto != null){
+            bucket.set(nuevoBoleto);
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -82,6 +105,16 @@ public class BoletoResource {
     public Response deleteBoleto(@PathParam("idBoleto") int idBoleto) {
         BoletoDAO dao = new BoletoDAO();
         int count = dao.deleteBoleto(idBoleto);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Boleto> bucket = redisson.getBucket(Integer.toString(idBoleto));
+        Boleto boleto = bucket.get();
+        if(boleto != null){
+            bucket.delete();
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
