@@ -45,8 +45,21 @@ public class PagoResource {
     @Path("/{idPago}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Pago getPago(@PathParam("idPago") int idPago) {
-        PagoDAO dao = new PagoDAO();
-        Pago pago = dao.getPago(idPago);
+        Pago pago;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        pago = bucket.get();
+        if(pago == null){
+            PagoDAO dao = new PagoDAO();
+            pago = dao.getPago(idPago);
+            bucket.set(pago);
+        }
+        
+        redisson.shutdown();
         return pago;
     }
     
@@ -66,9 +79,19 @@ public class PagoResource {
     @PUT
     @Path("/update/{idPago}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updatePago(@PathParam("idPago") int idPago, Pago emp) {
+    public Response updatePago(@PathParam("idPago") int idPago, Pago nuevoPago) {
         PagoDAO dao = new PagoDAO();
-        int count = dao.updatePago(idPago, emp);
+        int count = dao.updatePago(idPago, nuevoPago);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        Pago pago = bucket.get();
+        if(pago != null){
+            bucket.set(nuevoPago);
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -81,6 +104,16 @@ public class PagoResource {
     public Response deletePago(@PathParam("idPago") int idPago) {
         PagoDAO dao = new PagoDAO();
         int count = dao.deletePago(idPago);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        Pago pago = bucket.get();
+        if(pago != null){
+            bucket.delete();
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

@@ -45,8 +45,21 @@ public class EventoResource {
     @Path("/{idEvento}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Evento getEvento(@PathParam("idEvento") int idEvento) {
-        EventoDAO dao = new EventoDAO();
-        Evento evento = dao.getEvento(idEvento);
+        Evento evento;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        evento = bucket.get();
+        if(evento == null){
+            EventoDAO dao = new EventoDAO();
+            evento = dao.getEvento(idEvento);
+            bucket.set(evento);
+        }
+        
+        redisson.shutdown();
         return evento;
     }
     
@@ -59,8 +72,6 @@ public class EventoResource {
         evento.setLugar(evento.getLugar());
         evento.setFecha(evento.getFecha());
         evento.setArtista(evento.getArtista());
-        
-        
         EventoDAO dao = new EventoDAO();
         Evento eventoNuevo = dao.addEvento(evento);
         return eventoNuevo;
@@ -69,9 +80,19 @@ public class EventoResource {
     @PUT
     @Path("/update/{idEvento}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateEvento(@PathParam("idEvento") int idEvento, Evento emp) {
+    public Response updateEvento(@PathParam("idEvento") int idEvento, Evento nuevoEvento) {
         EventoDAO dao = new EventoDAO();
-        int count = dao.updateEvento(idEvento, emp);
+        int count = dao.updateEvento(idEvento, nuevoEvento);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        Evento evento = bucket.get();
+        if(evento != null){
+            bucket.set(nuevoEvento);
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -84,6 +105,16 @@ public class EventoResource {
     public Response deleteEvento(@PathParam("idEvento") int idEvento) {
         EventoDAO dao = new EventoDAO();
         int count = dao.deleteEvento(idEvento);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        Evento evento = bucket.get();
+        if(evento != null){
+            bucket.delete();
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
