@@ -86,11 +86,9 @@ public class UsuarioDAO {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaUpdate<Usuario> query = builder.createCriteriaUpdate(Usuario.class);
             Root<Usuario> root = query.from(Usuario.class);
-            query.set("nombre", usuario.getNombre());
             query.set("tipo", usuario.getTipo());
             query.set("alias", usuario.getAlias());
             query.set("contrasena", usuario.getContrasena());
-            query.set("fechaRegistro", usuario.getFechaRegistro());
            
             
             query.where(builder.equal(root.get("id"), id));

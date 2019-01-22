@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
+    <p><a href="api/reporte">Reporte resource</a> 
  * @author melina
  */
 

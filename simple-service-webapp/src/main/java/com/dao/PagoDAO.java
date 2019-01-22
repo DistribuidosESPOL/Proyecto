@@ -87,8 +87,7 @@ public class PagoDAO {
             CriteriaUpdate<Pago> query = builder.createCriteriaUpdate(Pago.class);
             Root<Pago> root = query.from(Pago.class);
             query.set("tipo", pago.getTipo());
-            query.set("monto", pago.getMonto());
-            query.set("banco", pago.getBanco());
+            query.set("evento", pago.getEvento());
             query.set("fechaPago", pago.getFechaPago());
            
             

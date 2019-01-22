@@ -2,11 +2,17 @@ package com.resources;
 
 import com.dao.LugarDAO;
 import com.models.Lugar;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -15,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.mvc.Template;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
@@ -38,8 +45,13 @@ public class LugarResource {
      * @return String that will be returned as a text/plain response.
      */
     
+    /*@GET
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })*/
+    
     @GET
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/lugar")
     public List<Lugar> getLugares() {
         //Set<Lugar> lugaresSet;
         
@@ -93,11 +105,24 @@ public class LugarResource {
     
     @POST
     @Path("/add")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Lugar addLugar(Lugar lugar) {
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/lugar")
+    public Response addLugar(@FormParam("nombre") String nombre, @FormParam("tipo") String tipo,
+                        @FormParam("capacidad") int capacidad, @FormParam("direccion") String direccion) {
         LugarDAO dao = new LugarDAO();
+        Lugar lugar = new Lugar();
+        lugar.setNombre(nombre);
+        lugar.setTipo(tipo);
+        lugar.setCapacidad(capacidad);
+        lugar.setDireccion(direccion);
         Lugar lugarNuevo = dao.addLugar(lugar);
-        return lugarNuevo;
+        try {
+            return Response.temporaryRedirect(new URI("/simple-service-webapp/api/lugar")).build();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(LugarResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     /**

@@ -90,6 +90,7 @@ public class EventoDAO {
             query.set("nombre", evento.getNombre());
             query.set("lugar", evento.getLugar());
             query.set("fecha", evento.getFecha());
+            query.set("precio", evento.getPrecio());
             query.set("artista", evento.getArtista());
             
             query.where(builder.equal(root.get("id"), id));

@@ -13,6 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.redisson.Redisson;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 
 @Path("usuario")
 public class UsuarioResource {
@@ -64,11 +68,11 @@ public class UsuarioResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Usuario addUsuario(Usuario usuario) {
-        usuario.setNombre(usuario.getNombre());
+        /*usuario.setNombre(usuario.getNombre());
         usuario.setTipo(usuario.getTipo());
         usuario.setAlias(usuario.getAlias());
         usuario.setContrasena(usuario.getContrasena());
-        usuario.setFechaRegistro(usuario.getFechaRegistro());
+        usuario.setFechaRegistro(usuario.getFechaRegistro());*/
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuarioNuevo = dao.addUsuario(usuario);
         return usuarioNuevo;

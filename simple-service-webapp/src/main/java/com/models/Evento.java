@@ -32,19 +32,24 @@ public class Evento {
     @Column(name="fecha")
     private Date fecha;
     
+    @Column(name="precio")
+    private float precio;
+    
     @Column(name="artista")
     private String artista;
     
     
     
     public Evento(){}
-    public Evento(int id, String tipo,  String nombre, int lugar, Date fecha, String artista){
+    public Evento(int id, String tipo,  String nombre, int lugar, Date fecha, 
+            String artista, float precio){
         this.id = id;
         this.tipo=tipo;
         this.nombre=nombre;
         this.lugar=lugar;
         this.fecha = fecha;
         this.artista=artista;
+        this.precio = precio;
     }
 
     public int getId() {
@@ -72,6 +77,14 @@ public class Evento {
     
     public String getArtista() {
         return artista;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
     }
     
     public void setId(int id) {

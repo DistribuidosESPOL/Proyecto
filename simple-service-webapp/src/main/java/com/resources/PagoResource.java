@@ -13,6 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.redisson.Redisson;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -67,10 +71,10 @@ public class PagoResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Pago addPago(Pago pago) {
-        pago.setTipo(pago.getTipo());
+        /*pago.setTipo(pago.getTipo());
         pago.setMonto(pago.getMonto());
         pago.setBanco(pago.getBanco());
-        pago.setFechaPago(pago.getFechaPago());        
+        pago.setFechaPago(pago.getFechaPago());*/        
         PagoDAO dao = new PagoDAO();
         Pago pagoNuevo = dao.addPago(pago);
         return pagoNuevo;

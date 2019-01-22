@@ -23,26 +23,21 @@ public class Pago{
     
     @Column(name="tipo")
     private String tipo;
-   
-    @Column(name="monto")
-    private int monto;
-    
-    @Column(name="banco")
-    private String banco;
     
     @Column(name="fechaPago")
     private Date fechaPago;
     
+    @Column(name="evento")
+    private int evento;
+    
     
     
     public Pago(){}
-    public Pago(int id, String tipo,int monto, String banco, Date fechaPago){
+    public Pago(int id, String tipo,int evento, Date fechaPago){
         this.id = id;
         this.tipo = tipo;
-        this.monto = monto;
-        this.banco = banco;
         this.fechaPago=fechaPago;
-        
+        this.evento = evento;
     }
 
     public int getId() {
@@ -61,22 +56,14 @@ public class Pago{
         this.tipo = tipo;
     }
 
-    public int getMonto() {
-        return monto;
+    public int getEvento() {
+        return evento;
     }
 
-    public void setMonto(int monto) {
-        this.monto = monto;
+    public void setEvento(int evento) {
+        this.evento = evento;
     }
-
-    public String getBanco() {
-        return banco;
-    }
-
-    public void setBanco(String banco) {
-        this.banco = banco;
-    }
-
+    
     public Date getFechaPago() {
         return fechaPago;
     }

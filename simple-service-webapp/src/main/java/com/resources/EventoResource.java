@@ -13,6 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Viewable;
+import org.redisson.Redisson;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -67,11 +71,11 @@ public class EventoResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Evento addEvento(Evento evento) {
-        evento.setTipo(evento.getTipo());
+        /*evento.setTipo(evento.getTipo());
         evento.setNombre(evento.getNombre());
         evento.setLugar(evento.getLugar());
         evento.setFecha(evento.getFecha());
-        evento.setArtista(evento.getArtista());
+        evento.setArtista(evento.getArtista());*/
         EventoDAO dao = new EventoDAO();
         Evento eventoNuevo = dao.addEvento(evento);
         return eventoNuevo;

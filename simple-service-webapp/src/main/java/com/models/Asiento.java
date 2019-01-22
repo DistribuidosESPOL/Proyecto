@@ -21,9 +21,7 @@ public class Asiento {
     
     @Column(name="categoria")
     private String categoria;
-    
-   
-    
+        
     @Column(name="numero")
     private int numero;
     
