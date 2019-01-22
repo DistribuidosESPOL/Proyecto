@@ -45,6 +45,12 @@ public class Lugar implements Serializable {
         this.capacidad = capacidad;
         this.direccion = direccion;
     }
+    public Lugar(String nombre, String tipo, int capacidad, String direccion){
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.capacidad = capacidad;
+        this.direccion = direccion;
+    }
 
     public int getId() {
         return id;

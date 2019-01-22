@@ -108,21 +108,18 @@ public class LugarResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/lugar")
-    public Response addLugar(@FormParam("nombre") String nombre, @FormParam("tipo") String tipo,
+    public List<Lugar> addLugar(@FormParam("nombre") String nombre, @FormParam("tipo") String tipo,
                         @FormParam("capacidad") int capacidad, @FormParam("direccion") String direccion) {
         LugarDAO dao = new LugarDAO();
-        Lugar lugar = new Lugar();
-        lugar.setNombre(nombre);
-        lugar.setTipo(tipo);
-        lugar.setCapacidad(capacidad);
-        lugar.setDireccion(direccion);
+        Lugar lugar = new Lugar(nombre, tipo, capacidad, direccion);
         Lugar lugarNuevo = dao.addLugar(lugar);
-        try {
+        return dao.getLugares();
+        /*try {
             return Response.temporaryRedirect(new URI("/simple-service-webapp/api/lugar")).build();
         } catch (URISyntaxException ex) {
             Logger.getLogger(LugarResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return null;*/
     }
     
     /**
