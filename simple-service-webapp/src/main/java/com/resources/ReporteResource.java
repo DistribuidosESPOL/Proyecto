@@ -45,8 +45,21 @@ public class ReporteResource {
     @Path("/{idReporte}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Reporte getReporte(@PathParam("idReporte") int idReporte) {
-        ReporteDAO dao = new ReporteDAO();
-        Reporte reporte = dao.getReporte(idReporte);
+        Reporte reporte;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Reporte> bucket = redisson.getBucket(Integer.toString(idReporte));
+        reporte = bucket.get();
+        if(reporte == null){
+            ReporteDAO dao = new ReporteDAO();
+            reporte = dao.getReporte(idReporte);
+            bucket.set(reporte);
+        }
+        
+        redisson.shutdown();
         return reporte;
     }
     
@@ -65,9 +78,19 @@ public class ReporteResource {
     @PUT
     @Path("/update/{idReporte}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateReporte(@PathParam("idReporte") int idReporte, Reporte emp) {
+    public Response updateReporte(@PathParam("idReporte") int idReporte, Reporte nuevoReporte) {
         ReporteDAO dao = new ReporteDAO();
-        int count = dao.updateReporte(idReporte, emp);
+        int count = dao.updateReporte(idReporte, nuevoReporte);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Reporte> bucket = redisson.getBucket(Integer.toString(idReporte));
+        Reporte reporte = bucket.get();
+        if(reporte != null){
+            bucket.set(nuevoReporte);
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -80,6 +103,16 @@ public class ReporteResource {
     public Response deleteReporte(@PathParam("idReporte") int idReporte) {
         ReporteDAO dao = new ReporteDAO();
         int count = dao.deleteReporte(idReporte);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Reporte> bucket = redisson.getBucket(Integer.idReporte));
+        Reporte reporte = bucket.get();
+        if(reporte != null){
+            bucket.delete();
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

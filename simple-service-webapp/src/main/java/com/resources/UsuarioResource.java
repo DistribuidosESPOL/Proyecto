@@ -42,8 +42,21 @@ public class UsuarioResource {
     @Path("/{idUsuario}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Usuario getUsuario(@PathParam("idUsuario") int idUsuario) {
-        UsuarioDAO dao = new UsuarioDAO();
-        Usuario usuario = dao.getUsuario(idUsuario);
+        Usuario usuario;
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        usuario = bucket.get();
+        if(usuario == null){
+            UsuarioDAO dao = new UsuarioDAO();
+            usuario = dao.getUsuario(idUsuario);
+            bucket.set(usuario);
+        }
+        
+        redisson.shutdown();
         return usuario;
     }
     
@@ -64,9 +77,19 @@ public class UsuarioResource {
     @PUT
     @Path("/update/{idUsuario}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Response updateUsuario(@PathParam("idUsuario") int idUsuario, Usuario emp) {
+    public Response updateUsuario(@PathParam("idUsuario") int idUsuario, Usuario nuevoUsuario) {
         UsuarioDAO dao = new UsuarioDAO();
-        int count = dao.updateUsuario(idUsuario, emp);
+        int count = dao.updateUsuario(idUsuario, nuevoUsuario);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        Usuario usuario = bucket.get();
+        if(usuario != null){
+            bucket.set(nuevoUsuario);
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -79,6 +102,16 @@ public class UsuarioResource {
     public Response deleteUsuario(@PathParam("idUsuario") int idUsuario) {
         UsuarioDAO dao = new UsuarioDAO();
         int count = dao.deleteUsuario(idUsuario);
+        Config config = new Config();
+        config.useSingleServer()
+            .setAddress("redis://127.0.0.1:6379");
+        
+        RedissonClient redisson = Redisson.create(config);
+        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        Usuario usuario = bucket.get();
+        if(usuario != null){
+            bucket.delete();
+        }
         if(count==0){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
