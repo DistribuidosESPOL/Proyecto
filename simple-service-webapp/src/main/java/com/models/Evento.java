@@ -7,8 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -17,6 +19,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Table(name="evento")
 public class Evento {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -39,14 +42,23 @@ public class Evento {
     private float precio;
     
     @Column(name="artista")
-    private String artista;
-    
-    
+    private String artista;    
     
     public Evento(){}
+    
     public Evento(int id, String tipo,  String nombre, Lugar lugar, Date fecha, 
             String artista, float precio){
         this.id = id;
+        this.tipo=tipo;
+        this.nombre=nombre;
+        this.lugar=lugar;
+        this.fecha = fecha;
+        this.artista=artista;
+        this.precio = precio;
+    }
+    
+    public Evento(String tipo,  String nombre, Lugar lugar, Date fecha, 
+            String artista, float precio){
         this.tipo=tipo;
         this.nombre=nombre;
         this.lugar=lugar;
@@ -59,13 +71,10 @@ public class Evento {
         return id;
     }
 
-    
-
     public String getTipo() {
         return tipo;
     }
     
-
     public String getNombre() {
         return nombre;
     }
@@ -98,8 +107,6 @@ public class Evento {
         this.tipo = tipo;
     }
 
-    
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -115,7 +122,5 @@ public class Evento {
     public void setArtista(String artista) {
         this.artista = artista;
     }
-    
-    
     
 }

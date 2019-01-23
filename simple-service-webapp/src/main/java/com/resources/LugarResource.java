@@ -2,6 +2,7 @@ package com.resources;
 
 import com.dao.LugarDAO;
 import com.models.Lugar;
+import java.net.URI;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,6 +15,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.server.mvc.Template;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
@@ -73,22 +75,22 @@ public class LugarResource {
     @GET
     @Path("/{idLugar}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Lugar getLugar(@PathParam("idLugar") int idLugar) {
+    public static Lugar getLugar(@PathParam("idLugar") int idLugar) {
         Lugar lugar;
-        Config config = new Config();
+        /*Config config = new Config();
         config.useSingleServer()
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
         RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
         lugar = bucket.get();
-        if(lugar==null){
+        if(lugar==null){*/
             LugarDAO dao = new LugarDAO();
             lugar = dao.getLugar(idLugar);
-            bucket.set(lugar);
+            /*bucket.set(lugar);
         }
         
-        redisson.shutdown();
+        redisson.shutdown();*/
         return lugar;
     }
     
@@ -97,12 +99,13 @@ public class LugarResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/lugar")
-    public List<Lugar> addLugar(@FormParam("nombre") String nombre, @FormParam("tipo") String tipo,
+    public Response addLugar(@FormParam("nombre") String nombre, @FormParam("tipo") String tipo,
                         @FormParam("capacidad") int capacidad, @FormParam("direccion") String direccion) {
         LugarDAO dao = new LugarDAO();
         Lugar lugar = new Lugar(nombre, tipo, capacidad, direccion);
         Lugar lugarNuevo = dao.addLugar(lugar);
-        return dao.getLugares();
+        URI uri = UriBuilder.fromUri("lugar").build();
+        return Response.seeOther(uri).build();
     }
     
     /**

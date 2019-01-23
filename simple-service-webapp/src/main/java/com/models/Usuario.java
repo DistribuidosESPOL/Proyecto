@@ -20,6 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="usuario")
 public class Usuario {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -43,12 +44,13 @@ public class Usuario {
         this.alias = alias;
         this.contrasena = contrasena;
     }
-    public Usuario(String tipo, 
-            String alias, String contrasena){
+
+    public Usuario(String tipo, String alias, String contrasena){
         this.tipo = tipo;
         this.alias = alias;
         this.contrasena = contrasena;
     }
+    
     public Usuario(String alias, String contrasena){
         this.alias = alias;
         this.contrasena = contrasena;
