@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="asiento")
 public class Asiento {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -29,8 +30,15 @@ public class Asiento {
     private int lugar;
     
     public Asiento(){}
+    
     public Asiento(int id, String categoria,  int numero, int lugar){
         this.id = id;
+        this.categoria = categoria;
+        this.numero = numero;
+        this.lugar = lugar;
+    }
+    
+    public Asiento(String categoria,  int numero, int lugar){
         this.categoria = categoria;
         this.numero = numero;
         this.lugar = lugar;
@@ -38,15 +46,12 @@ public class Asiento {
 
     public int getId() {
         return id;
-    }
-
-    
+    } 
 
     public String getCategoria() {
         return categoria;
     }
     
-
     public int getNumero() {
         return numero;
     }
@@ -63,8 +68,6 @@ public class Asiento {
         this.categoria = categoria;
     }
 
-    
-
     public void setNumero(int numero) {
         this.numero = numero;
     }
@@ -72,7 +75,5 @@ public class Asiento {
     public void setLugar(int lugar) {
         this.lugar = lugar;
     }
-    
-    
-    
+       
 }

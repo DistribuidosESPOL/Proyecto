@@ -19,7 +19,7 @@
     </style>
   </head>
   <body>
-    <h2>User Form</h2>
+    <h2>Creación de Lugar</h2>
     <form action="{{^id}}/simple-service-webapp/api/lugar/add{{/id}}{{#id}}/simple-service-webapp/api/lugar/update{{/id}}" method="POST">
       <input type="hidden" name="id" value="{{id}}" />
       <div class="row">
@@ -47,8 +47,8 @@
         </div>
       </div>
       <div class="toolbar">
-        <input type="submit" value="Save" />
-        <a href="/simple-service-webapp/api/lugar">Cancel</a>
+        <input type="submit" value="Crear"/>
+        <a type="button" href="/simple-service-webapp/api/lugar">Cancelar</a>
       </div>
     </form>
   </body>

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="lugar")
 public class Lugar implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -38,6 +39,7 @@ public class Lugar implements Serializable {
     private String direccion;
     
     public Lugar(){}
+    
     public Lugar(int id, String nombre, String tipo, int capacidad, String direccion){
         this.id = id;
         this.nombre = nombre;
@@ -91,7 +93,5 @@ public class Lugar implements Serializable {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
-    
-    
+   
 }

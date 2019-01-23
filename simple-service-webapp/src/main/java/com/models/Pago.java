@@ -15,9 +15,9 @@ import java.util.Date;
 @Entity
 @Table(name="pago")
 public class Pago{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     @Column(name="id")
     private int id;
     
@@ -30,11 +30,16 @@ public class Pago{
     @Column(name="evento")
     private int evento;
     
-    
-    
     public Pago(){}
+    
     public Pago(int id, String tipo,int evento, Date fechaPago){
         this.id = id;
+        this.tipo = tipo;
+        this.fechaPago=fechaPago;
+        this.evento = evento;
+    }
+    
+    public Pago(String tipo,int evento, Date fechaPago){
         this.tipo = tipo;
         this.fechaPago=fechaPago;
         this.evento = evento;
@@ -71,11 +76,5 @@ public class Pago{
     public void setFechaPago(Date fechaPago) {
         this.fechaPago = fechaPago;
     }
-
-    
-
-
-    
-    
+   
 }
-

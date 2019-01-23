@@ -2,8 +2,17 @@ package com.resources;
 
 import com.dao.EventoDAO;
 import com.models.Evento;
+import com.models.Lugar;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -12,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.mvc.Template;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
@@ -38,7 +48,8 @@ public class EventoResource {
     }*/
     
     @GET
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/evento")
     public List<Evento> getEventos() {
         EventoDAO dao = new EventoDAO();
         List<Evento> listaEventos = dao.getEventos();
@@ -69,16 +80,31 @@ public class EventoResource {
     
     @POST
     @Path("/add")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Evento addEvento(Evento evento) {
-        /*evento.setTipo(evento.getTipo());
-        evento.setNombre(evento.getNombre());
-        evento.setLugar(evento.getLugar());
-        evento.setFecha(evento.getFecha());
-        evento.setArtista(evento.getArtista());*/
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/evento")
+    public List<Evento> addEvento(@FormParam("tipo") String tipo, 
+            @FormParam("nombre") String nombre, @FormParam("lugar") int lugar, 
+            @FormParam("fecha") String fecha, @FormParam("precio") float precio,
+            @FormParam("artista") String artista) {
         EventoDAO dao = new EventoDAO();
+        Lugar lug = LugarResource.getLugar(lugar);
+        DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fec = null;
+        try {
+            fec = sourceFormat.parse(fecha);
+        } catch (ParseException ex) {
+            Logger.getLogger(EventoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Evento evento = new Evento(tipo, nombre, lug, fec, artista, precio);
         Evento eventoNuevo = dao.addEvento(evento);
-        return eventoNuevo;
+        return dao.getEventos();
+        /*try {
+            return Response.temporaryRedirect(new URI("/simple-service-webapp/api/lugar")).build();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(LugarResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;*/
     }
     
     @PUT
