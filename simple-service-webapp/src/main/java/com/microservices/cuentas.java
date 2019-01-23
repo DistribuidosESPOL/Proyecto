@@ -35,15 +35,18 @@ public class cuentas {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/lugar")
-    public List<Lugar> registro(@FormParam("alias") String alias, 
-            @FormParam("contrasena") String contrasena,
-            @FormParam("tipo") String tipo) {
-        Usuario user = new Usuario(tipo, alias, contrasena);
+    public Response registro(@FormParam("alias") String alias, 
+            @FormParam("contrasena") String contrasena) {
+        if(alias.length() < 3 || contrasena.length() < 6){
+                URI uri = UriBuilder.fromUri("sesion/registroForm").build();
+                return Response.seeOther( uri ).build();
+        }
+        Usuario user = new Usuario(alias, contrasena);
         UsuarioResource nuevoUsuario = new UsuarioResource();
         nuevoUsuario.addUsuario(user);
         
-        LugarDAO e = new LugarDAO();
-        return e.getLugares();
+        URI uri = UriBuilder.fromUri("../api/evento").build();
+        return Response.seeOther( uri ).build();
     }
     
     @POST

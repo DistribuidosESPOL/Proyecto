@@ -25,19 +25,13 @@
       <div class="row">
         <div class="label">Nombre de usuario</div>
         <div class="control">
-          <input type="text" name="alias" value="{{alias}}" {{#alias}}readonly{{/alias}} />
+          <input type="text" name="alias" value="{{alias}}" minlength="3" maxlength="10" {{#alias}}readonly{{/alias}} />
         </div>
       </div>
       <div class="row">
         <div class="label">Contraseña</div>
         <div class="control">
-          <input type="password" name="contrasena" value="{{contrasena}}" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="label">Tipo</div>
-        <div class="control">
-          <input type="text" name="tipo" value="{{tipo}}" />
+          <input type="password" name="contrasena" value="{{contrasena}}" minlength="8" maxlength="16"/>
         </div>
       </div>
       <div class="toolbar">
