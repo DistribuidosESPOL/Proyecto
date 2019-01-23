@@ -120,7 +120,31 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
-              
+        
+        <!--dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency-->
+        
+        <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-client -->
+        <!--dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.19.2</version>
+        </dependency-->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.18.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>1.18.1</version>
+        </dependency>
+
     </dependencies>
     <properties>
         <jersey.version>2.27</jersey.version>

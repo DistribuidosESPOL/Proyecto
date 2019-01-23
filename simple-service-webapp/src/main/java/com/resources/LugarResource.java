@@ -41,8 +41,9 @@ public class LugarResource {
     
     @GET
     //@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
-    @Template(name="/lugar")
+    //@Produces(MediaType.TEXT_HTML)
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    //@Template(name="/lugar")
     public List<Lugar> getLugares() {
         //Set<Lugar> lugaresSet;
         

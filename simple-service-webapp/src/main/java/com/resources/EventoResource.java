@@ -3,9 +3,11 @@ package com.resources;
 import com.dao.EventoDAO;
 import com.models.Evento;
 import com.models.Lugar;
+import com.models.ResponseEvento;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,12 +24,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Template;
-import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
-
 /**
  * Root resource (exposed at "myresource" path)
  */
@@ -38,6 +38,7 @@ public class EventoResource {
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
      *
+     * @param idUsuario
      * @return String that will be returned as a text/plain response.
      */
     /*
@@ -48,13 +49,36 @@ public class EventoResource {
     }*/
     
     @GET
+    @Path("/{idUsuario}")
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/evento")
-    //@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Evento> getEventos() {
+    public ResponseEvento getEventos(@PathParam("idUsuario") int idUsuario) {        
+        
+        EventoDAO dao = new EventoDAO();
+        List<Evento> listaEventos = dao.getEventos();         
+        ResponseEvento re=new ResponseEvento(idUsuario, listaEventos);
+        
+        return re;
+    }
+    
+    @GET
+    //@Produces(MediaType.TEXT_HTML)
+    //@Template(name="/evento")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public List<Evento> getEventos() throws ParseException {
+       
         EventoDAO dao = new EventoDAO();
         List<Evento> listaEventos = dao.getEventos();
-        return listaEventos;
+        List<Evento> nueva = new ArrayList<>();
+        for(Evento e:listaEventos){
+            String f = new SimpleDateFormat("yyyy-MM-dd").format(e.getFecha());
+            Date fe = new SimpleDateFormat("yyyy-MM-dd").parse(f);
+            Evento ev = new Evento(e.getTipo(), e.getNombre(), e.getLugar(), fe, e.getArtista(), e.getPrecio());
+            
+            nueva.add(ev);
+        }
+        
+        return nueva;
     }
     
     @GET

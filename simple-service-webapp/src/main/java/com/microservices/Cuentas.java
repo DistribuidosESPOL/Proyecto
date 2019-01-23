@@ -6,9 +6,19 @@
 package com.microservices;
 
 import com.dao.LugarDAO;
+import com.models.Evento;
 import com.models.Lugar;
+import com.models.ResponseEvento;
 import com.models.Usuario;
 import com.resources.UsuarioResource;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.WebResource.Builder;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -23,6 +33,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.server.mvc.Template;
 import org.glassfish.jersey.server.mvc.Viewable;
+
 
 /**
  *
@@ -49,7 +60,7 @@ public class Cuentas {
         return Response.seeOther( uri ).build();
     }
     
-    @POST
+    /*@POST
     @Path("/validar")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
@@ -62,12 +73,42 @@ public class Cuentas {
         for(Usuario u:usuarios){
             if (u.getAlias().equals(alias) && u.getContrasena().equals(contrasena)){
                 //  LugarDAO e = new LugarDAO();
-                URI uri = UriBuilder.fromUri("../api/evento").build();
+                URI uri = UriBuilder.fromUri("../api/evento/"+u.getId()).build();
                 return Response.seeOther( uri ).build();
             }
         }
-        URI uri = UriBuilder.fromUri("sesion").build();
+        URI uri = UriBuilder.fromUri("../api/lugar").build();
         return Response.seeOther( uri ).build();
+    }*/
+    
+    @POST
+    @Path("/validar")
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/evento")
+    public ResponseEvento inicioSesion(@FormParam("alias") String alias, 
+            @FormParam("contrasena") String contrasena) throws URISyntaxException {
+        Usuario user = new Usuario(alias, contrasena);
+        UsuarioResource nuevoUsuario = new UsuarioResource();
+        List<Usuario> usuarios = nuevoUsuario.getUsuarios();
+        // Create Jersey client
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(clientConfig);
+        
+        WebResource webResource = client.resource("http://localhost:8080/simple-service-webapp/api/evento");
+ 
+        ClientResponse response = webResource.get(ClientResponse.class);
+        
+        List<Evento> listaEventos = webResource.get(new GenericType<List<Evento>>() {});
+        
+        int idUsuario =  0;
+        for(Usuario u:usuarios){
+            if (u.getAlias().equals(alias) && u.getContrasena().equals(contrasena)){
+                idUsuario = u.getId();
+            }
+        }
+        ResponseEvento re=new ResponseEvento(idUsuario, listaEventos);
+        return re;
     }
     
     @GET
