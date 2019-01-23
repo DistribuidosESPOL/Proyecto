@@ -29,7 +29,7 @@ import org.glassfish.jersey.server.mvc.Viewable;
  * @author anni
  */
 @Path("sesion")
-public class cuentas {
+public class Cuentas {
     @POST
     @Path("/registrar")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

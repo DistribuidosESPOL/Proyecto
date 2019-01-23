@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Asiento</title>
+    <style>
+      .row {
+        line-height: 2;
+      }
+      .header {
+        font-weight: bold;
+      }
+      .col {
+        float: left;
+        width: 16%;
+      }
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .info {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Seleccionar asientos</h2>
+    <form action="/simple-service-webapp/micro/compra/pago" method="POST">
+        <label>Categoría de asiento</label>
+        <select name="categoria" required>
+            {{#.}}
+            <option value="{{categoria}}">{{categoria}}</option>
+            {{/.}}
+        </select>
+        <label>Número de asientos</label>
+        <input id="num_boletos" name="num_boletos"required>
+        <input type="submit" value="Siguiente"/>
+        <a type="button" href="/simple-service-webapp/api/evento">Cancelar</button>
+    </form>
+  </body>
+</html>

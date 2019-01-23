@@ -60,22 +60,22 @@ public class EventoResource {
     @GET
     @Path("/{idEvento}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Evento getEvento(@PathParam("idEvento") int idEvento) {
+    public static Evento getEvento(@PathParam("idEvento") int idEvento) {
         Evento evento;
-        Config config = new Config();
+        /*Config config = new Config();
         config.useSingleServer()
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
         RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
         evento = bucket.get();
-        if(evento == null){
+        if(evento == null){*/
             EventoDAO dao = new EventoDAO();
             evento = dao.getEvento(idEvento);
-            bucket.set(evento);
+            /*bucket.set(evento);
         }
         
-        redisson.shutdown();
+        redisson.shutdown();*/
         return evento;
     }
     

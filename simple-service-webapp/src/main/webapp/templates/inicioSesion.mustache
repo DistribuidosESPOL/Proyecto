@@ -19,19 +19,19 @@
     </style>
   </head>
   <body>
-    <h2>User Form</h2>
+    <h2>Inicio de sesión</h2>
     <form action="/simple-service-webapp/micro/sesion/validar" method="POST">
       <input type="hidden" name="id" value="{{id}}" />
       <div class="row">
         <div class="label">Nombre de usuario</div>
         <div class="control">
-          <input type="text" name="alias" value="{{alias}}" {{#alias}}readonly{{/alias}} />
+          <input type="text" name="alias" value="{{alias}}" {{#alias}}readonly{{/alias}} required/>
         </div>
       </div>
       <div class="row">
         <div class="label">Contraseña</div>
         <div class="control">
-          <input type="password" name="contrasena" value="{{contrasena}}" />
+          <input type="password" name="contrasena" value="{{contrasena}}" required/>
         </div>
       </div>
       <div class="toolbar">
