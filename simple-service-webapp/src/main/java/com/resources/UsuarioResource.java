@@ -68,11 +68,6 @@ public class UsuarioResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Usuario addUsuario(Usuario usuario) {
-        /*usuario.setNombre(usuario.getNombre());
-        usuario.setTipo(usuario.getTipo());
-        usuario.setAlias(usuario.getAlias());
-        usuario.setContrasena(usuario.getContrasena());
-        usuario.setFechaRegistro(usuario.getFechaRegistro());*/
         UsuarioDAO dao = new UsuarioDAO();
         Usuario usuarioNuevo = dao.addUsuario(usuario);
         return usuarioNuevo;

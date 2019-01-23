@@ -12,7 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.glassfish.jersey.server.mvc.Viewable;
+import org.glassfish.jersey.server.mvc.Template;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -38,7 +38,9 @@ public class EventoResource {
     }*/
     
     @GET
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/eventos")
+    //@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public List<Evento> getEventos() {
         EventoDAO dao = new EventoDAO();
         List<Evento> listaEventos = dao.getEventos();
@@ -71,11 +73,6 @@ public class EventoResource {
     @Path("/add")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public Evento addEvento(Evento evento) {
-        /*evento.setTipo(evento.getTipo());
-        evento.setNombre(evento.getNombre());
-        evento.setLugar(evento.getLugar());
-        evento.setFecha(evento.getFecha());
-        evento.setArtista(evento.getArtista());*/
         EventoDAO dao = new EventoDAO();
         Evento eventoNuevo = dao.addEvento(evento);
         return eventoNuevo;
@@ -124,11 +121,4 @@ public class EventoResource {
         }
         return Response.ok().build();
     }
-    
-    /*@GET
-    @Path("showForm")
-    @Produces(MediaType.TEXT_HTML)
-    public Viewable showForm() {
-        return new Viewable("/EventoForm");
-    }*/
 }

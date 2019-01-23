@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -26,8 +28,9 @@ public class Evento {
     @Column(name="nombre")
     private String nombre;
    
-    @Column(name="lugar")
-    private int lugar;
+    @ManyToOne
+    @JoinColumn(name="lugar")
+    private Lugar lugar;
     
     @Column(name="fecha")
     private Date fecha;
@@ -41,7 +44,7 @@ public class Evento {
     
     
     public Evento(){}
-    public Evento(int id, String tipo,  String nombre, int lugar, Date fecha, 
+    public Evento(int id, String tipo,  String nombre, Lugar lugar, Date fecha, 
             String artista, float precio){
         this.id = id;
         this.tipo=tipo;
@@ -67,7 +70,7 @@ public class Evento {
         return nombre;
     }
 
-    public int getLugar() {
+    public Lugar getLugar() {
         return lugar;
     }
 
@@ -101,7 +104,7 @@ public class Evento {
         this.nombre = nombre;
     }
 
-    public void setLugar(int lugar) {
+    public void setLugar(Lugar lugar) {
         this.lugar = lugar;
     }
     
