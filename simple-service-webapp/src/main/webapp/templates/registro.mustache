@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registrarse</title>
+    <style>
+    .row {
+      line-height: 2;
+    }
+    .row .label {
+      float: left;
+      width: 40%;
+      text-align: right;
+      margin-right: 20px;
+    }
+    .toolbar {
+      text-align: center;
+      margin-top: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>User Form</h2>
+    <form action="{{^id}}/simple-service-webapp/micro/sesion/registrar{{/id}}" method="POST">
+      <input type="hidden" name="id" value="{{id}}" />
+      <div class="row">
+        <div class="label">Nombre de usuario</div>
+        <div class="control">
+          <input type="text" name="alias" value="{{alias}}" {{#alias}}readonly{{/alias}} />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Contraseña</div>
+        <div class="control">
+          <input type="password" name="contrasena" value="{{contrasena}}" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Tipo</div>
+        <div class="control">
+          <input type="text" name="tipo" value="{{tipo}}" />
+        </div>
+      </div>
+      <div class="toolbar">
+        <input type="submit" value="Registrarse" /></br>
+        <a href="/simple-service-webapp/micro/sesion">Ya tengo una cuenta</a>
+      </div>
+    </form>
+  </body>
+</html>
+

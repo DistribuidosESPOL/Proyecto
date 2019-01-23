@@ -50,6 +50,7 @@ public class EventoResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/evento")
+    //@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public List<Evento> getEventos() {
         EventoDAO dao = new EventoDAO();
         List<Evento> listaEventos = dao.getEventos();
@@ -150,11 +151,4 @@ public class EventoResource {
         }
         return Response.ok().build();
     }
-    
-    /*@GET
-    @Path("showForm")
-    @Produces(MediaType.TEXT_HTML)
-    public Viewable showForm() {
-        return new Viewable("/EventoForm");
-    }*/
 }

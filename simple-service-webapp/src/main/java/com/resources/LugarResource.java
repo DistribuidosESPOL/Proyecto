@@ -3,13 +3,7 @@ package com.resources;
 import com.dao.LugarDAO;
 import com.models.Lugar;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -26,12 +20,8 @@ import org.glassfish.jersey.server.mvc.Template;
 import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
-import org.redisson.api.RSetCache;
 import org.redisson.api.RedissonClient;
-import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
-import org.redisson.config.TransportMode;
-import redis.clients.jedis.Jedis;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -116,12 +106,6 @@ public class LugarResource {
         Lugar lugarNuevo = dao.addLugar(lugar);
         URI uri = UriBuilder.fromUri("lugar").build();
         return Response.seeOther(uri).build();
-        /*try {
-            return Response.temporaryRedirect(new URI("/simple-service-webapp/api/lugar")).build();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(LugarResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;*/
     }
     
     /**

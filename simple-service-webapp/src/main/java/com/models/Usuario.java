@@ -37,17 +37,21 @@ public class Usuario {
     
     public Usuario(){}
     
-    public Usuario(int id, String nombre, String tipo, 
-            String alias, String contrasena, Date fechaRegistro){
+    public Usuario(int id, String tipo, 
+            String alias, String contrasena){
         this.id = id;
         this.tipo = tipo;
         this.alias = alias;
         this.contrasena = contrasena;
     }
-    
-    public Usuario(String nombre, String tipo, String alias, String contrasena, 
-            Date fechaRegistro){
+
+    public Usuario(String tipo, String alias, String contrasena){
         this.tipo = tipo;
+        this.alias = alias;
+        this.contrasena = contrasena;
+    }
+    
+    public Usuario(String alias, String contrasena){
         this.alias = alias;
         this.contrasena = contrasena;
     }
