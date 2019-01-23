@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="asiento")
 public class Asiento {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -25,12 +28,20 @@ public class Asiento {
     @Column(name="numero")
     private int numero;
     
-    @Column(name="lugar")
-    private int lugar;
+    @ManyToOne
+    @JoinColumn(name="lugar")
+    private Lugar lugar;
     
     public Asiento(){}
-    public Asiento(int id, String categoria,  int numero, int lugar){
+    
+    public Asiento(int id, String categoria,  int numero, Lugar lugar){
         this.id = id;
+        this.categoria = categoria;
+        this.numero = numero;
+        this.lugar = lugar;
+    }
+    
+    public Asiento(String categoria,  int numero, Lugar lugar){
         this.categoria = categoria;
         this.numero = numero;
         this.lugar = lugar;
@@ -38,20 +49,17 @@ public class Asiento {
 
     public int getId() {
         return id;
-    }
-
-    
+    } 
 
     public String getCategoria() {
         return categoria;
     }
     
-
     public int getNumero() {
         return numero;
     }
 
-    public int getLugar() {
+    public Lugar getLugar() {
         return lugar;
     }
 
@@ -63,16 +71,12 @@ public class Asiento {
         this.categoria = categoria;
     }
 
-    
-
     public void setNumero(int numero) {
         this.numero = numero;
     }
 
-    public void setLugar(int lugar) {
+    public void setLugar(Lugar lugar) {
         this.lugar = lugar;
     }
-    
-    
-    
+       
 }

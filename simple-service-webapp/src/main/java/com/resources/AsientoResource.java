@@ -39,7 +39,7 @@ public class AsientoResource {
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Asiento> getAsientos() {
+    public static List<Asiento> getAsientos() {
         AsientoDAO dao = new AsientoDAO();
         List<Asiento> listaAsientos = dao.getAsientos();
         return listaAsientos;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pago</title>
+    <style>
+      .row {
+        line-height: 2;
+      }
+      .header {
+        font-weight: bold;
+      }
+      .col {
+        float: left;
+        width: 16%;
+      }
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .info {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Pago</h2>
+    <form action="/simple-service-webapp/micro/compra/pago/final" method="POST">
+        <label>Evento</label>
+        <input id="evento" name="evento" value="" readonly required/>
+        <label>Lugar</label>
+        <input id="lugar" name="lugar" value="" readonly required/>
+        <label>Categoría de asiento</label>
+        <input id="categoria" name="categoria" value="" readonly required/>
+        <label>Número de asientos</label>
+        <input id="num_asientos" name="num_asientos" value="" readonly required>
+        <input type="submit" value="Comprar"/>
+        <a type="button" href="/simple-service-webapp/api/evento">Cancelar</button>
+    </form>
+  </body>
+</html>
