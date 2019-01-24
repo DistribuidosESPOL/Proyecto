@@ -60,21 +60,21 @@ public class EventoResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static Evento getEvento(@PathParam("idEvento") int idEvento) {
         Evento evento;
-        /*Config config = new Config();
+        Config config = new Config();
         config.useSingleServer()
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        RBucket<Evento> bucket = redisson.getBucket("evento_"+Integer.toString(idEvento));
         evento = bucket.get();
-        if(evento == null){*/
+        if(evento == null){
             EventoDAO dao = new EventoDAO();
             evento = dao.getEvento(idEvento);
             evento.setFecha(null);
-            /*bucket.set(evento);
+            bucket.set(evento);
         }
         
-        redisson.shutdown();*/
+        redisson.shutdown();
         return evento;
     }
     
@@ -99,12 +99,6 @@ public class EventoResource {
         Evento evento = new Evento(tipo, nombre, lug, fec, artista, precio);
         Evento eventoNuevo = dao.addEvento(evento);
         return dao.getEventos();
-        /*try {
-            return Response.temporaryRedirect(new URI("/simple-service-webapp/api/lugar")).build();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(LugarResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;*/
     }
     
     @PUT
@@ -118,7 +112,7 @@ public class EventoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        RBucket<Evento> bucket = redisson.getBucket("evento_"+Integer.toString(idEvento));
         Evento evento = bucket.get();
         if(evento != null){
             bucket.set(nuevoEvento);
@@ -140,7 +134,7 @@ public class EventoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Evento> bucket = redisson.getBucket(Integer.toString(idEvento));
+        RBucket<Evento> bucket = redisson.getBucket("evento_"+Integer.toString(idEvento));
         Evento evento = bucket.get();
         if(evento != null){
             bucket.delete();

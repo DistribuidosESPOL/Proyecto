@@ -32,12 +32,6 @@ public class AsientoResource {
      *
      * @return String that will be returned as a text/plain response.
      */
-    /*
-    @GET
-    @Produces("text/plain")
-    public String getIt() {
-        return "Listo!";
-    }*/
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })

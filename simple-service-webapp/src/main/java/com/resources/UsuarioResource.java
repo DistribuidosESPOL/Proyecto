@@ -27,12 +27,6 @@ public class UsuarioResource {
      *
      * @return String that will be returned as a text/plain response.
      */
-    /*
-    @GET
-    @Produces("text/plain")
-    public String getIt() {
-        return "Listo!";
-    }*/
     
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
@@ -52,7 +46,7 @@ public class UsuarioResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        RBucket<Usuario> bucket = redisson.getBucket("usuario_"+Integer.toString(idUsuario));
         usuario = bucket.get();
         if(usuario == null){
             UsuarioDAO dao = new UsuarioDAO();
@@ -84,7 +78,7 @@ public class UsuarioResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        RBucket<Usuario> bucket = redisson.getBucket("usuario_"+Integer.toString(idUsuario));
         Usuario usuario = bucket.get();
         if(usuario != null){
             bucket.set(nuevoUsuario);
@@ -106,7 +100,7 @@ public class UsuarioResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Usuario> bucket = redisson.getBucket(Integer.toString(idUsuario));
+        RBucket<Usuario> bucket = redisson.getBucket("usuario_"+Integer.toString(idUsuario));
         Usuario usuario = bucket.get();
         if(usuario != null){
             bucket.delete();

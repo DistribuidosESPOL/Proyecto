@@ -35,8 +35,8 @@
    
    <body>
       <sql:setDataSource var = "snapshot" driver = "com.mysql.cj.jdbc.Driver"
-         url = "jdbc:mysql://localhost:3306/sistematickets"
-         user = "anni"  password = "Ros1t@123"/>
+         url = "jdbc:mysql://sistematickets.cknexxrfjiwk.us-east-1.rds.amazonaws.com/sistematickets"
+         user = "root"  password = "S1st3maT"/>
       
       <ul>
         <li><a href="micro/sesion">Iniciar sesión</a></li>

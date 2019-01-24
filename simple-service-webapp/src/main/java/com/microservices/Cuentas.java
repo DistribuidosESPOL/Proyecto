@@ -5,17 +5,8 @@
  */
 package com.microservices;
 
-import com.models.Evento;
-import com.models.ResponseEventos;
 import com.models.Usuario;
 import com.resources.UsuarioResource;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -57,27 +48,6 @@ public class Cuentas {
         return Response.seeOther( uri ).build();
     }
     
-    /*@POST
-    @Path("/validar")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
-    @Template(name="/lugar")
-    public Response inicioSesion(@FormParam("alias") String alias, 
-            @FormParam("contrasena") String contrasena) throws URISyntaxException {
-        Usuario user = new Usuario(alias, contrasena);
-        UsuarioResource nuevoUsuario = new UsuarioResource();
-        List<Usuario> usuarios = nuevoUsuario.getUsuarios();
-        for(Usuario u:usuarios){
-            if (u.getAlias().equals(alias) && u.getContrasena().equals(contrasena)){
-                //  LugarDAO e = new LugarDAO();
-                URI uri = UriBuilder.fromUri("../api/evento/"+u.getId()).build();
-                return Response.seeOther( uri ).build();
-            }
-        }
-        URI uri = UriBuilder.fromUri("../api/lugar").build();
-        return Response.seeOther( uri ).build();
-    }*/
-    
     @POST
     @Path("/validar")
     @Produces(MediaType.TEXT_HTML)
@@ -88,27 +58,7 @@ public class Cuentas {
         Usuario user = new Usuario(alias, contrasena);
         UsuarioResource nuevoUsuario = new UsuarioResource();
         List<Usuario> usuarios = nuevoUsuario.getUsuarios();
-        // Create Jersey client
-        /*ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        Client client = Client.create(clientConfig);
         
-        WebResource webResource = client.resource("http://localhost:8080/simple-service-webapp/api/evento");
- 
-        ClientResponse response = webResource.accept("application/json").type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-        
-        List<Evento> listaEventos = webResource.get(new GenericType<List<Evento>>() {});*/
-        
-        /*for(Usuario u:usuarios){
-            if (u.getAlias().equals(alias) && u.getContrasena().equals(contrasena)){
-                ResponseEventos re=new ResponseEventos(true, listaEventos);
-                return re;
-            }
-        }
-        ResponseEventos re=new ResponseEventos(false, listaEventos);
-        return re;*/
-        
-        //List<Usuario> usuarios = nuevoUsuario.getUsuarios();
         for(Usuario u:usuarios){
             if (u.getAlias().equals(alias) && u.getContrasena().equals(contrasena)){
                 //  LugarDAO e = new LugarDAO();

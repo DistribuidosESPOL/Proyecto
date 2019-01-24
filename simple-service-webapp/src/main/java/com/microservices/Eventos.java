@@ -39,7 +39,7 @@ public class Eventos {
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         
-        WebResource webResource = client.resource("http://localhost:8080/simple-service-webapp/api/evento");
+        WebResource webResource = client.resource("http://52.91.78.14:8080/simple-service-webapp/api/evento");
  
         ClientResponse response = webResource.accept("application/json").type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         
@@ -59,7 +59,7 @@ public class Eventos {
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
         
-        WebResource webResource = client.resource("http://localhost:8080/simple-service-webapp/api/evento/"+idEvento);
+        WebResource webResource = client.resource("http://52.91.78.14:8080/simple-service-webapp/api/evento/"+idEvento);
  
         ClientResponse response = webResource.accept("application/json").type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         

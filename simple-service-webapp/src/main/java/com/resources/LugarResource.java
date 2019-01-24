@@ -58,20 +58,20 @@ public class LugarResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static Lugar getLugar(@PathParam("idLugar") int idLugar) {
         Lugar lugar;
-        /*Config config = new Config();
+        Config config = new Config();
         config.useSingleServer()
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        RBucket<Lugar> bucket = redisson.getBucket("lugar_"+Integer.toString(idLugar));
         lugar = bucket.get();
-        if(lugar==null){*/
+        if(lugar==null){
             LugarDAO dao = new LugarDAO();
             lugar = dao.getLugar(idLugar);
-            /*bucket.set(lugar);
+            bucket.set(lugar);
         }
         
-        redisson.shutdown();*/
+        redisson.shutdown();
         return lugar;
     }
     
@@ -107,7 +107,7 @@ public class LugarResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        RBucket<Lugar> bucket = redisson.getBucket("lugar_"+Integer.toString(idLugar));
         Lugar lugar = bucket.get();
         if(lugar!=null){
             bucket.set(nuevoLugar);
@@ -131,7 +131,7 @@ public class LugarResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Lugar> bucket = redisson.getBucket(Integer.toString(idLugar));
+        RBucket<Lugar> bucket = redisson.getBucket("lugar_"+Integer.toString(idLugar));
         Lugar lugar = bucket.get();
         if(lugar!=null){
             bucket.delete();
