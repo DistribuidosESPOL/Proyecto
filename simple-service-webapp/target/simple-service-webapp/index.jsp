@@ -73,7 +73,7 @@
                <td><c:out value = "${row.fecha}"/></td>
                <td><c:out value = "${row.artista}"/></td>
                <td><c:out value = "${row.precio}"/></td>
-               <td><button>VER</button></td>
+               <td><a type="button" href="/simple-service-webapp/micro/eventos/${row.id}">VER</a></td>
             </tr>
          </c:forEach>
       </table>

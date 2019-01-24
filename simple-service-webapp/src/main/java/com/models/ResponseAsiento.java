@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class ResponseAsiento {
     private int idEvento;
-    private List<Asiento> lista;
+    private List<Asiento> listaAsientos;
     
     public ResponseAsiento() {}
     
     public ResponseAsiento(int idEvento, List<Asiento> lista) {
         this.idEvento = idEvento;
-        this.lista = lista;
+        this.listaAsientos = lista;
     }
 
     public int getIdEvento() {
@@ -25,12 +25,12 @@ public class ResponseAsiento {
         this.idEvento = idEvento;
     }
 
-    public List<Asiento> getLista() {
-        return lista;
+    public List<Asiento> getListaAsientos() {
+        return listaAsientos;
     }
 
-    public void setLista(List<Asiento> lista) {
-        this.lista = lista;
+    public void setListaAsientos(List<Asiento> listaAsientos) {
+        this.listaAsientos = listaAsientos;
     }
     
 }

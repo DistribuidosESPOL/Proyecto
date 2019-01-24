@@ -9,6 +9,7 @@ import com.models.ResponseAsiento;
 import com.models.ResponsePago;
 import com.resources.AsientoResource;
 import com.resources.EventoResource;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.mvc.Template;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  *
@@ -53,7 +55,7 @@ public class Compras {
         List<Asiento> asientos = AsientoResource.getAsientos();
         List<Asiento> as = new ArrayList<>();
         for(Asiento asiento : asientos) {
-            if(asiento.getLugar() == lugar) {
+            if(asiento.getLugar().getId() == lugar.getId()) {
                 as.add(asiento);
             }
         }
@@ -66,7 +68,7 @@ public class Compras {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     //@Produces(MediaType.TEXT_HTML)
     //@Template(name="/pago")
-    public Response comprarBoleto(@FormParam("tipo") String tipo, 
+    public Response comprarBoleto(@FormParam("tipo_pago") String tipo, 
             @FormParam("evento_id") int evento_id, @FormParam("total") float total) {
         PagoDAO dao = new PagoDAO();
         Evento evento = EventoResource.getEvento(evento_id);
@@ -74,7 +76,9 @@ public class Compras {
         Date fec = new Date();
         Pago pago = new Pago(tipo, evento, fec, total);
         Pago pagoNuevo = dao.addPago(pago);
-        return null;
+        URI uri = UriBuilder.fromUri("compra/pagos").build();
+        return Response.seeOther( uri ).build();
+        
     }
     
     @POST

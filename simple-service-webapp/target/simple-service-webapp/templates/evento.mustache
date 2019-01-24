@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Eventos</title>
+    <style>
+      .row {
+        line-height: 2;
+      }
+      .header {
+        font-weight: bold;
+      }
+      .col {
+        float: left;
+        width: 50%;
+      }
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .info {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Evento</h2>
+    <div>
+        <div class="row">
+            <label class="col">Nombre:</label>
+            <label class="col">{{nombre}}</label>
+        </div>
+        <div class="row">
+            <label class="col">Tipo:</label>
+            <label class="col">{{tipo}}</label>
+        </div>
+        <div class="row">
+            <label class="col">Artista:</label>
+            <label class="col">{{artista}}</label>
+        </div>
+        <!--div class="row">
+            <label class="col">Fecha:</label>
+            <label class="col">{{fecha}}</label>
+        </div-->
+        <div class="row">
+            <label class="col">Lugar:</label>
+            <label class="col">{{lugar.nombre}}</label>
+        </div>
+        <div class="row">
+            <label class="col">Precio:</label>
+            <label class="col">{{precio}}</label>
+        </div>
+        
+        <!--div class="col">
+            <input type="button" onclick="location.href='/simple-service-webapp/micro/compra/{{id}}'" value="Comprar">
+        </div-->
+        
+    </div>
+  </body>
+</html>
