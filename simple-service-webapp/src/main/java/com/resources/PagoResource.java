@@ -1,9 +1,18 @@
 package com.resources;
 
 import com.dao.PagoDAO;
+import com.models.Evento;
 import com.models.Pago;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -55,7 +64,7 @@ public class PagoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        RBucket<Pago> bucket = redisson.getBucket("pago_" + Integer.toString(idPago));
         pago = bucket.get();
         if(pago == null){
             PagoDAO dao = new PagoDAO();
@@ -69,13 +78,20 @@ public class PagoResource {
     
     @POST
     @Path("/add")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Pago addPago(Pago pago) {
-        /*pago.setTipo(pago.getTipo());
-        pago.setMonto(pago.getMonto());
-        pago.setBanco(pago.getBanco());
-        pago.setFechaPago(pago.getFechaPago());*/        
+    public static Pago addPago(@FormParam("tipo") String tipo, @FormParam("fechaPago") String fechaPago,
+            @FormParam("evento") int evento, @FormParam("total") float total) {
         PagoDAO dao = new PagoDAO();
+        Evento even = EventoResource.getEvento(evento);
+        DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fec = null;
+        try {
+            fec = sourceFormat.parse(fechaPago);
+        } catch (ParseException ex) {
+            Logger.getLogger(EventoResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Pago pago = new Pago(tipo, even, fec, total);
         Pago pagoNuevo = dao.addPago(pago);
         return pagoNuevo;
     }
@@ -91,7 +107,7 @@ public class PagoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        RBucket<Pago> bucket = redisson.getBucket("pago_" + Integer.toString(idPago));
         Pago pago = bucket.get();
         if(pago != null){
             bucket.set(nuevoPago);
@@ -113,7 +129,7 @@ public class PagoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Pago> bucket = redisson.getBucket(Integer.toString(idPago));
+        RBucket<Pago> bucket = redisson.getBucket("pago_" + Integer.toString(idPago));
         Pago pago = bucket.get();
         if(pago != null){
             bucket.delete();

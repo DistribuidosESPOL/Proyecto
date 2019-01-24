@@ -11,7 +11,7 @@
       }
       .col {
         float: left;
-        width: 16%;
+        width: 50%;
       }
       .toolbar {
         margin-bottom: 20px;
@@ -22,28 +22,37 @@
     </style>
   </head>
   <body>
-    <h2>Eventos disponibles</h2>
+    <h2>Evento</h2>
     <div>
-        <div class="row header">
-            <div class="col">Nombre</div>
-            <div class="col">Artista</div>
-            <div class="col">Fecha</div>
-            <div class="col">Lugar</div>
-            <div class="col">Precio</div>
-            <div class="col">Acción</div>
-        </div>
-        {{#lista}}
         <div class="row">
-            <div class="col">{{nombre}}</div>
-            <div class="col">{{artista}}</div>
-            <div class="col">{{fecha}}</div>
-            <div class="col">{{lugar.nombre}}</div>
-            <div class="col">{{precio}}</div>
-            <div class="col">
-                <a type="button" href="/simple-service-webapp/micro/compra/{{id}}">Comprar</a>
-            </div>
+            <label class="col">Nombre:</label>
+            <label class="col">{{nombre}}</label>
         </div>
-        {{/lista}}
+        <div class="row">
+            <label class="col">Tipo:</label>
+            <label class="col">{{tipo}}</label>
+        </div>
+        <div class="row">
+            <label class="col">Artista:</label>
+            <label class="col">{{artista}}</label>
+        </div>
+        <!--div class="row">
+            <label class="col">Fecha:</label>
+            <label class="col">{{fecha}}</label>
+        </div-->
+        <div class="row">
+            <label class="col">Lugar:</label>
+            <label class="col">{{lugar.nombre}}</label>
+        </div>
+        <div class="row">
+            <label class="col">Precio:</label>
+            <label class="col">{{precio}}</label>
+        </div>
+        
+        <!--div class="col">
+            <input type="button" onclick="location.href='/simple-service-webapp/micro/compra/{{id}}'" value="Comprar">
+        </div-->
+        
     </div>
   </body>
 </html>

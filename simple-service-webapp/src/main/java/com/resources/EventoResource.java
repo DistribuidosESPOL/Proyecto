@@ -3,11 +3,10 @@ package com.resources;
 import com.dao.EventoDAO;
 import com.models.Evento;
 import com.models.Lugar;
-import com.models.ResponseEvento;
+import com.models.ResponseEventos;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,44 +40,19 @@ public class EventoResource {
      * @param idUsuario
      * @return String that will be returned as a text/plain response.
      */
-    /*
-    @GET
-    @Produces("text/plain")
-    public String getIt() {
-        return "Listo!";
-    }*/
     
     @GET
-    @Path("/{idUsuario}")
-    @Produces(MediaType.TEXT_HTML)
-    @Template(name="/evento")
-    public ResponseEvento getEventos(@PathParam("idUsuario") int idUsuario) {        
-        
-        EventoDAO dao = new EventoDAO();
-        List<Evento> listaEventos = dao.getEventos();         
-        ResponseEvento re=new ResponseEvento(idUsuario, listaEventos);
-        
-        return re;
-    }
-    
-    @GET
-    //@Produces(MediaType.TEXT_HTML)
-    //@Template(name="/evento")
+    //@Template(name="/eventos")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public List<Evento> getEventos() throws ParseException {
+    public List<Evento> getEventos() {
        
         EventoDAO dao = new EventoDAO();
         List<Evento> listaEventos = dao.getEventos();
-        List<Evento> nueva = new ArrayList<>();
         for(Evento e:listaEventos){
-            String f = new SimpleDateFormat("yyyy-MM-dd").format(e.getFecha());
-            Date fe = new SimpleDateFormat("yyyy-MM-dd").parse(f);
-            Evento ev = new Evento(e.getTipo(), e.getNombre(), e.getLugar(), fe, e.getArtista(), e.getPrecio());
-            
-            nueva.add(ev);
+            e.setFecha(null);
         }
         
-        return nueva;
+        return listaEventos;
     }
     
     @GET
@@ -96,6 +70,7 @@ public class EventoResource {
         if(evento == null){*/
             EventoDAO dao = new EventoDAO();
             evento = dao.getEvento(idEvento);
+            evento.setFecha(null);
             /*bucket.set(evento);
         }
         

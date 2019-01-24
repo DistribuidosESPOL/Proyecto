@@ -23,17 +23,18 @@
   </head>
   <body>
     <h2>Seleccionar asientos</h2>
-    <form action="/simple-service-webapp/micro/compra/pago" method="POST">
+    <form action="/simple-service-webapp/micro/compra/pago/{{idEvento}}/final" method="POST">
         <label>Categoría de asiento</label>
         <select name="categoria" required>
-            {{#.}}
+            {{#lista}}
             <option value="{{categoria}}">{{categoria}}</option>
-            {{/.}}
+            {{/lista}}
         </select>
         <label>Número de asientos</label>
-        <input id="num_boletos" name="num_boletos"required>
+        <input type="number" min="1" id="num_asientos" name="num_asientos" required>
+        <label>Tipo de pago</label>
         <input type="submit" value="Siguiente"/>
-        <a type="button" href="/simple-service-webapp/api/evento">Cancelar</button>
+        <input type="button" onclick="location.href='/simple-service-webapp/micro/eventos'" value="Cancelar">
     </form>
   </body>
 </html>

@@ -25,15 +25,21 @@
     <h2>Pago</h2>
     <form action="/simple-service-webapp/micro/compra/pago/final" method="POST">
         <label>Evento</label>
-        <input id="evento" name="evento" value="" readonly required/>
+        <input id="evento" name="evento" value="{{evento.nombre}}" readonly required/>
         <label>Lugar</label>
-        <input id="lugar" name="lugar" value="" readonly required/>
+        <input id="lugar" name="lugar" value="{{evento.lugar.nombre}}" readonly required/>
         <label>Categoría de asiento</label>
-        <input id="categoria" name="categoria" value="" readonly required/>
+        <input id="categoria" name="categoria" value="{{categoria}}" readonly required/>
         <label>Número de asientos</label>
-        <input id="num_asientos" name="num_asientos" value="" readonly required>
+        <input id="num_asientos" name="num_asientos" value="{{num_asientos}}" readonly required>
+        <label>Tipo de pago</label>
+        <input id="tipo_pago" name="tipo_pago" required>
+        <label>Costo final</label>
+        <input id="total" name="total" value="{{total}}" required>
+
+        <input type="hidden" id="evento_id" name="evento_id" value="{{evento.id}}">
         <input type="submit" value="Comprar"/>
-        <a type="button" href="/simple-service-webapp/api/evento">Cancelar</button>
+        <input type="button" onclick="location.href='/simple-service-webapp/api/evento'" value="Cancelar">
     </form>
   </body>
 </html>

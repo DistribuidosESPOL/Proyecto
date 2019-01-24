@@ -29,6 +29,12 @@
             <param-name>jersey.config.server.provider.packages</param-name>
             <param-value>com.resources</param-value>
         </init-param>
+        
+        <init-param>
+            <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
         <!-- Register and configure MvcFeature -->
         <init-param>
             <param-name>jersey.config.server.provider.classnames</param-name>

@@ -1,11 +1,18 @@
 package com.microservices;
 
+import com.dao.PagoDAO;
 import com.models.Asiento;
 import com.models.Evento;
 import com.models.Lugar;
+import com.models.Pago;
+import com.models.ResponseAsiento;
+import com.models.ResponsePago;
 import com.resources.AsientoResource;
 import com.resources.EventoResource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -25,11 +32,22 @@ import javax.ws.rs.Path;
 @Path("compra")
 public class Compras {
     
+    
+    @GET
+    @Path("/pagos")
+    @Produces(MediaType.TEXT_HTML)
+    @Template(name="/pagos")
+    public List<Pago> mostrarPagos() {
+        PagoDAO dao = new PagoDAO();
+        List<Pago> pagos = dao.getPagos();
+        return pagos;
+    }     
+    
     @GET
     @Path("/{idEvento}")
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/asiento")
-    public List<Asiento> seleccionarAsientos(@PathParam("idEvento") int idEvento) {
+    public ResponseAsiento seleccionarAsientos(@PathParam("idEvento") int idEvento) {
         Evento evento = EventoResource.getEvento(idEvento);
         Lugar lugar = evento.getLugar();
         List<Asiento> asientos = AsientoResource.getAsientos();
@@ -39,31 +57,37 @@ public class Compras {
                 as.add(asiento);
             }
         }
-        return as;
+        ResponseAsiento ra = new ResponseAsiento(idEvento, as);
+        return ra;
     }    
-    
-    @POST
-    @Path("/pago")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Produces(MediaType.TEXT_HTML)
-    @Template(name="/pago")
-    public Response verCompra(@FormParam("categoria") String categoria, 
-            @FormParam("categoria") int num_boletos) {
-        //Necesito tener aquí el id del evento para enviar el evento, el lugar y los 
-        //asiento a la vista pago
-        //si el num_boletos es mayor o igual al numero de asientos de esa categoria
-        //enviar los datos al view pago, caso contrario redirigir a asiento.mustache
-        return null;
-    }
     
     @POST
     @Path("/pago/final")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    //@Produces(MediaType.TEXT_HTML)
+    //@Template(name="/pago")
+    public Response comprarBoleto(@FormParam("tipo") String tipo, 
+            @FormParam("evento_id") int evento_id, @FormParam("total") float total) {
+        PagoDAO dao = new PagoDAO();
+        Evento evento = EventoResource.getEvento(evento_id);
+        DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fec = new Date();
+        Pago pago = new Pago(tipo, evento, fec, total);
+        Pago pagoNuevo = dao.addPago(pago);
+        return null;
+    }
+    
+    @POST
+    @Path("/pago/{idEvento}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_HTML)
     @Template(name="/pago")
-    public Response comprarBoleto() {
-        
-        return null;
+    public ResponsePago mostrarBoleto(@PathParam("idEvento") int idEvento, 
+        @FormParam("categoria") String categoria, @FormParam("num_asientos") int num_asientos) {
+        Evento evento = EventoResource.getEvento(idEvento);
+        float total = evento.getPrecio() * num_asientos;
+        ResponsePago rp = new ResponsePago(evento, categoria, num_asientos, total);        
+        return rp;
     }
     
 }

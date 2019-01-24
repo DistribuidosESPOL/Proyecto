@@ -1,5 +1,8 @@
 package com.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +19,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @Table(name="evento")
-public class Evento {
+public class Evento implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -80,7 +83,7 @@ public class Evento {
     public Lugar getLugar() {
         return lugar;
     }
-
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     public Date getFecha() {
         return fecha;
     }
@@ -112,7 +115,7 @@ public class Evento {
     public void setLugar(Lugar lugar) {
         this.lugar = lugar;
     }
-    
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }

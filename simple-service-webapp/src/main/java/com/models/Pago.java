@@ -1,5 +1,6 @@
 package com.models;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -14,7 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="pago")
-public class Pago{
+public class Pago implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,22 +30,28 @@ public class Pago{
     @Column(name="fechaPago")
     private Date fechaPago;
     
-    @Column(name="evento")
-    private int evento;
+    @ManyToOne
+    @JoinColumn(name="evento")
+    private Evento evento;
+    
+    @Column(name="total")
+    private float total;
     
     public Pago(){}
     
-    public Pago(int id, String tipo,int evento, Date fechaPago){
+    public Pago(int id, String tipo,Evento evento, Date fechaPago, float total){
         this.id = id;
         this.tipo = tipo;
         this.fechaPago=fechaPago;
         this.evento = evento;
+        this.total = total;
     }
     
-    public Pago(String tipo,int evento, Date fechaPago){
+    public Pago(String tipo,Evento evento, Date fechaPago, float total){
         this.tipo = tipo;
         this.fechaPago=fechaPago;
         this.evento = evento;
+        this.total = total;
     }
 
     public int getId() {
@@ -61,11 +70,19 @@ public class Pago{
         this.tipo = tipo;
     }
 
-    public int getEvento() {
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public Evento getEvento() {
         return evento;
     }
 
-    public void setEvento(int evento) {
+    public void setEvento(Evento evento) {
         this.evento = evento;
     }
     

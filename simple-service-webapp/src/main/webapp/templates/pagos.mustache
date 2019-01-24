@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pagos</title>
+    <style>
+      .row {
+        line-height: 2;
+      }
+      .header {
+        font-weight: bold;
+      }
+      .col {
+        float: left;
+        width: 50%;
+      }
+      .toolbar {
+        margin-bottom: 20px;
+      }
+      .info {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Pagos disponibles</h2>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Lugar</th>
+                    <th>Tipo de pago</th>
+                    <th>Precio total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#.}}
+                <tr>
+                    <td>{{evento.nombre}}</td>
+                    <td>{{evento.lugar.nombre}}</td>
+                    <td>{{tipo}}</td>
+                    <td>{{total}}</td>
+                </tr>
+                {{/.}}
+            </tbody>
+        </table>
+    </div>
+  </body>
+</html>

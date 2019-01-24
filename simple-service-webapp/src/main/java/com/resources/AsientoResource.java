@@ -2,8 +2,11 @@ package com.resources;
 
 import com.dao.AsientoDAO;
 import com.models.Asiento;
+import com.models.Lugar;
 import java.util.List;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -12,7 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.glassfish.jersey.server.mvc.Viewable;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -55,7 +57,7 @@ public class AsientoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Asiento> bucket = redisson.getBucket(Integer.toString(idAsiento));
+        RBucket<Asiento> bucket = redisson.getBucket("asiento_" + Integer.toString(idAsiento));
         asiento = bucket.get();
         if(asiento == null){
             AsientoDAO dao = new AsientoDAO();
@@ -67,14 +69,15 @@ public class AsientoResource {
         return asiento;
     }
     
-    @POST
+    @POST    
     @Path("/add")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Asiento addAsiento(Asiento asiento) {
-        asiento.setCategoria(asiento.getCategoria());
-        asiento.setNumero(asiento.getNumero());
-        asiento.setLugar(asiento.getLugar());
+    public Asiento addAsiento(@FormParam("categoria") String categoria, 
+            @FormParam("numero") int numero, @FormParam("lugar") int lugar) {
         AsientoDAO dao = new AsientoDAO();
+        Lugar lug = LugarResource.getLugar(lugar);
+        Asiento asiento = new Asiento(categoria, numero, lug);
         Asiento asientoNuevo = dao.addAsiento(asiento);
         return asientoNuevo;
     }
@@ -90,7 +93,7 @@ public class AsientoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Asiento> bucket = redisson.getBucket(Integer.toString(idAsiento));
+        RBucket<Asiento> bucket = redisson.getBucket("asiento_" + Integer.toString(idAsiento));
         Asiento asiento = bucket.get();
         if(asiento != null){
             bucket.set(nuevoAsiento);
@@ -112,7 +115,7 @@ public class AsientoResource {
             .setAddress("redis://127.0.0.1:6379");
         
         RedissonClient redisson = Redisson.create(config);
-        RBucket<Asiento> bucket = redisson.getBucket(Integer.toString(idAsiento));
+        RBucket<Asiento> bucket = redisson.getBucket("asiento_" + Integer.toString(idAsiento));
         Asiento asiento = bucket.get();
         if(asiento != null){
             bucket.delete();
@@ -122,11 +125,4 @@ public class AsientoResource {
         }
         return Response.ok().build();
     }
-    
-    /*@GET
-    @Path("showForm")
-    @Produces(MediaType.TEXT_HTML)
-    public Viewable showForm() {
-        return new Viewable("/AsientoForm");
-    }*/
 }

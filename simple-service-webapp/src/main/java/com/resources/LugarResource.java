@@ -45,31 +45,11 @@ public class LugarResource {
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     //@Template(name="/lugar")
     public List<Lugar> getLugares() {
-        //Set<Lugar> lugaresSet;
-        
-        /*Config config = new Config();
-        config.useSingleServer()
-            .setAddress("redis://127.0.0.1:6379");*/
         
         LugarDAO dao;
         dao = new LugarDAO();
         List<Lugar> listaLugares = dao.getLugares();
         
-        /*RedissonClient redisson = Redisson.create(config);
-        RSetCache<Lugar> setCache = redisson.getSetCache("lugares");
-        lugaresSet = setCache.readAll();
-        if(!lugaresSet.iterator().hasNext()){
-            dao = new LugarDAO();
-            listaLugares = dao.getLugares();
-            for (Lugar l : listaLugares) {
-                setCache.add(l);
-            }   
-        }else{
-            for (Lugar lu : lugaresSet) {
-                listaLugares.add(lu);
-            }
-        }
-        redisson.shutdown();*/
         return listaLugares;
     }
     
